@@ -1,7 +1,7 @@
 FROM python:2-alpine
 
-RUN pip2.7 install expat-devel && cherrypy
-RUN yum install MySQL-python
+RUN yum install python-pip
+RUN pip2.7 install expat-devel && pip2.7 install cherrypy && yum install MySQL-python
 RUN curl -L http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/Pyrex-0.9.9.tar.gz | tar -xvf | python setup.py
 WORKDIR /usr/src/app
 
