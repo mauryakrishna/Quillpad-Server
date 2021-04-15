@@ -7,8 +7,9 @@ RUN apk update && \
   apk add py-pip && \
   apk add curl && \
   apk add expat-dev py3-cherrypy py-mysqldb && \
-  curl -L http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/Pyrex-0.9.9.tar.gz | tar -xvf -  && \
-  python Pyrex-0.9.9/setup.py && 
+  curl -L http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/Pyrex-0.9.9.tar.gz -o Pyrex-0.9.9 && \
+  tar -xvf Pyrex-0.9.9  && \
+  python Pyrex-0.9.9/setup.py
 
 # copy all the files and folder to docker image
 COPY . .
