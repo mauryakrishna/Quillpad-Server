@@ -23,16 +23,18 @@ RUN set -ex \
   | xargs -r apk info --installed \
   | sort -u \
   )" \
-  && apk add --virtual .python-rundeps $runDeps \
-  && apk del .build-deps
+  && apk add --virtual .python-rundeps $runDeps
+#  && apk del .build-deps
 
+RUN gcc --version
 RUN apk add py-pip && \
   apk add curl && \
   apk add expat-dev && \
   pip install cherrypy && \
-  curl -L http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/Pyrex-0.9.9.tar.gz -o Pyrex-0.9.9 && \
-  tar -xvf Pyrex-0.9.9  && \
-  python Pyrex-0.9.9/setup.py
+  curl -L http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/Pyrex-0.9.9.tar.gz -o Pyrex-0.9.9.tar.gz && \
+  tar -xvf Pyrex-0.9.9.tar.gz  && \
+  cd Pyrex-0.9.9 && \
+  python setup.py install
 
 # copy all the files and folder to docker image
 COPY . .
