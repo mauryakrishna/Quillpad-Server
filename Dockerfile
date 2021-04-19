@@ -49,6 +49,7 @@ RUN cd Python\ Cart/python && \
   cp QuillCCart.so ../../ && \
   cd ../../
 
+RUN mkdir logs && cd logs && touch quill.log
 EXPOSE 8090
 
 CMD [ "python", "startquill_cherry.py" ]
