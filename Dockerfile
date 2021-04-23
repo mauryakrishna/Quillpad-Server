@@ -26,23 +26,24 @@ RUN set -ex \
   && apk add --virtual .python-rundeps $runDeps
 #  && apk del .build-deps
 
-RUN gcc --version
-RUN apk add py-pip && \
-  apk add curl && \
-  apk add expat-dev && \
+RUN apk add --no-cache py-pip && \
+  apk add --no-cache curl && \
+  apk add --no-cache expat-dev && \
   pip install cherrypy && \
   curl -L http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/Pyrex-0.9.9.tar.gz -o Pyrex-0.9.9.tar.gz && \
   tar -xvf Pyrex-0.9.9.tar.gz  && \
   cd Pyrex-0.9.9 && \
-  python setup.py install
+  python setup.py install && \
+  rm -rf Pyrex-0.9.9.tar.gz && \
+  apk del curl py-pip
 
 # copy all the files and folder to docker image
 COPY . .
 
 # decompress all the .tar.bz2, .tar.gz and .zip
-RUN find . -name '*.tar.bz2' -exec tar -xjf {} \; && rm -rf - && \
-  find . -name '*.tar.gz' -exec tar -xf {} \; && rm -rf - && \
-  find . -name '*.zip' -exec unzip {} \;
+RUN find . -name '*.tar.bz2' -exec tar -xjf {} \; -exec rm -rf {} \; && \
+  find . -name '*.tar.gz' -exec tar -xf {} \; -exec rm -rf {} \; && \
+  find . -name '*.zip' -exec unzip {} \; -exec rm -rf {} \;
 
 RUN cd Python\ Cart/python && \
   python setup.py build_ext --inplace && \
